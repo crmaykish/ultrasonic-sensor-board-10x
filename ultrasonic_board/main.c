@@ -6,8 +6,6 @@
  * https://github.com/crmaykish/ultrasonic-sensor-board-10x
  */ 
 
-#define F_CPU 16000000UL
-
 #include <avr/io.h>
 #include "pins.h"
 #include "bitmacros.h"
@@ -17,24 +15,18 @@
 #include <stdio.h>
 #include <util/delay.h>
 
-
-int counter = 0;
-
 void setup() {
+	ultrasonicInit();
 	serialInit();
 
 	// Redirect stdout to the UART
 	stdout = &uartOut;
-
-	ultrasonicInit();
 }
 
 void loop() {
-	printf("Hello, Ansel! %d\n", counter);
-	//setBit(PORTC, TRIG3);
-	//_delay_us(12);
-	//clearBit(PORTC, TRIG3);
-	counter++;
+	unsigned int distance = read();
+	printf("Distance: %d\n", distance);
+	
 	_delay_ms(1000);
 }
 

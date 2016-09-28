@@ -1,8 +1,10 @@
 #ifndef PINS_H_
 #define PINS_H_
 
+#define F_CPU 16000000UL
+
 #define TRIG0	PD4
-#define	ECHO0	PD5		
+#define	ECHO0	PD5
 #define	TRIG1	PD6
 #define	ECHO1	PD7
 #define	TRIG2	PC0

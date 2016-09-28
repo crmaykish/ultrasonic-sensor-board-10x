@@ -5,5 +5,6 @@
 #define setBit(P, B)		P |= bitValue(B)
 #define clearBit(P, B)		P &= ~bitValue(B)
 #define toggleBit(P, B)		P ^= bitValue(B)
+#define queryBit(P, B)		(P & bitValue(B))
 
 #endif /* BITMACROS_H_ */
