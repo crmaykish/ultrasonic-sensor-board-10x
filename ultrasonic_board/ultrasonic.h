@@ -1,13 +1,21 @@
 #ifndef ULTRASONIC_H_
 #define ULTRASONIC_H_
 
-void ultrasonicInit();
+#define TRIGGER_TIMEOUT		0xFF
+#define DISTANCE_TIMEOUT	0xFF
+#define TRIGGER_ERROR		-1
+#define DISTANCE_ERROR		-2
 
-void trigger();
+typedef struct Sensor {
+	int port;
+	int pin;
+	int ddr;
+	int trigger;
+	int echo;
+} Sensor;
 
-unsigned int read();
+void sensor_init(Sensor *sensor, int port, int pin, int ddr, int trigger, int echo);
 
-void start_timer();
-unsigned int timer_val();
+unsigned int sensor_read(Sensor *sensor);
 
 #endif /* ULTRASONIC_H_ */

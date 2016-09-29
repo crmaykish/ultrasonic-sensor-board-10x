@@ -15,19 +15,22 @@
 #include <stdio.h>
 #include <util/delay.h>
 
-void setup() {
-	ultrasonicInit();
-	serialInit();
+Sensor s8;
 
+void setup() {
+	serialInit();
 	// Redirect stdout to the UART
 	stdout = &uartOut;
+	
+	sensor_init(&s8, PORTA, PINA, DDRA, TRIG8, ECHO8);
 }
 
 void loop() {
-	unsigned int distance = read();
-	printf("Distance: %d\n", distance);
+	unsigned int s = sensor_read(&s8);
 	
-	_delay_ms(60);
+	printf("Distance: %d\n", s);
+	
+	_delay_ms(100);
 }
 
 int main(void) {
