@@ -27,7 +27,7 @@ void loop() {
 	unsigned int distance = read();
 	printf("Distance: %d\n", distance);
 	
-	_delay_ms(100);
+	_delay_ms(60);
 }
 
 int main(void) {

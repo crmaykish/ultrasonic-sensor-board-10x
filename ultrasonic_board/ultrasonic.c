@@ -1,3 +1,5 @@
+// Reference: http://extremeelectronics.co.in/avr-tutorials/interfacing-ultrasonic-rangefinder-with-avr-mcus-%E2%80%93-avr-tutorial/
+
 #include "ultrasonic.h"
 #include "pins.h"
 #include "bitmacros.h"
@@ -28,37 +30,47 @@ void ultrasonicInit() {
 	clearBit(DDRA, ECHO8);
 	setBit(DDRA, TRIG9);
 	clearBit(DDRA, ECHO9);
+	
+	// turn on timer at 1/8 scaling
+	TCCR1B = bitValue(CS11);
 }
 
 void trigger() {
-	clearBit(PORTD, TRIG0);
+	clearBit(PORTA, TRIG8);
 	_delay_us(1);
-	setBit(PORTD, TRIG0);
+	setBit(PORTA, TRIG8);
 	_delay_us(10);
-	clearBit(PORTD, TRIG0);	
-	//_delay_us(1);
+	clearBit(PORTA, TRIG8);	
 }
 
 unsigned int read() {
-	int distance = 0;
-	unsigned int response_timer = 0;
-	unsigned int distance_timer = 0;
-	
 	trigger();
 	
-	while (!(PIND & (1 << ECHO0))) {
-		response_timer++;
+	start_timer();
+	
+	while (!queryBit(PINA, ECHO8)) {
+		if (timer_val() > 60000) {
+			return -1;
+		}
 	}
 	
-	// don't do anything in here... messes up the timing
+	start_timer();
 	
-	//printf("response timer: %d\n", response_timer);
-	
-	while ((PIND & (1 << ECHO0))) {
-		distance_timer++;
+	while (queryBit(PINA, ECHO8)) {
+		if (timer_val() > 60000) {
+			return -2;
+		}
 	}
 	
-	distance = distance_timer;
-	
-	return distance;
+	// Bit shift takes care of scaling, division takes care of conversion to centimeters
+	return ((timer_val() >> 1) / 58.0);
+}
+
+void start_timer() {
+	TCNT1 = 0;
+}
+
+unsigned int timer_val() {
+	unsigned int count = TCNT1;
+	return (count);
 }
