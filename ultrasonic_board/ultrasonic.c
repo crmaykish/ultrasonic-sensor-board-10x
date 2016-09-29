@@ -44,8 +44,6 @@ unsigned int read() {
 	unsigned int response_timer = 0;
 	unsigned int distance_timer = 0;
 	
-	printf("ping\n");
-	
 	trigger();
 	
 	while (!(PIND & (1 << ECHO0))) {
@@ -61,8 +59,6 @@ unsigned int read() {
 	}
 	
 	distance = distance_timer;
-	
-	printf("returning %d \n", distance);
 	
 	return distance;
 }
