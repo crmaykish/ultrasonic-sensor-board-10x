@@ -2,4 +2,4 @@
 
 Dedicated sensor board for reading 10 ultrasonic ping sensors and passing the measurements over serial
 
-![Sensor board](board.jpg)
+![Sensor board](board_new.jpg)
