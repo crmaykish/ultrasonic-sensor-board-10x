@@ -15,16 +15,22 @@
 #include <stdio.h>
 #include <util/delay.h>
 
+Ultrasonic s8 = {&S_PORT8, &S_PIN8, &S_DDR8, S_TRIG8, S_ECHO8};
+
 void setup() {
-	ultrasonicInit();
 	serialInit();
 
 	// Redirect stdout to the UART
 	stdout = &uartOut;
+	
+	// turn on timer at 1/8 scaling
+	TCCR1B = bitValue(CS11);
+	
+	ultrasonic_init(&s8);
 }
 
 void loop() {
-	unsigned int distance = read();
+	unsigned int distance = ultrasonic_read(&s8);
 	printf("Distance: %d\n", distance);
 	
 	_delay_ms(60);
