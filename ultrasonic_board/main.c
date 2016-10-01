@@ -5,6 +5,7 @@
 * Author : Colin Maykish
 * https://github.com/crmaykish/ultrasonic-sensor-board-10x
 */
+#define SENSOR_COUNT	10
 
 #include <avr/io.h>
 #include "pins.h"
@@ -14,7 +15,7 @@
 #include <stdio.h>
 #include <util/delay.h>
 
-Ultrasonic sensors[10] = {
+Ultrasonic sensors[SENSOR_COUNT] = {
 	{&S_PORT0, &S_PIN0, &S_DDR0, S_TRIG0, S_ECHO0},
 	{&S_PORT1, &S_PIN1, &S_DDR1, S_TRIG1, S_ECHO1},
 	{&S_PORT2, &S_PIN2, &S_DDR2, S_TRIG2, S_ECHO2},
@@ -44,10 +45,10 @@ void setup() {
 // Read all sensors and output JSON over serial
 void loop() {
 	printf("{ \"sensors\" : [");
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < SENSOR_COUNT; i++) {
 		unsigned int distance = ultrasonic_read(&sensors[i]);
 		printf("{ \"pos\" : %d, \"val\" : %d }", i, distance);
-		if (i != 9) printf(", ");
+		if (i != SENSOR_COUNT - 1) printf(", ");
 	}
 	printf("] }\n");
 }
