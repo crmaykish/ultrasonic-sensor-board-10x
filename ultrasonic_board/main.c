@@ -44,13 +44,10 @@ void setup() {
 
 // Read all sensors and output JSON over serial
 void loop() {
-	printf("{ \"sensors\" : [");
 	for (int i = 0; i < SENSOR_COUNT; i++) {
 		unsigned int distance = ultrasonic_read(&sensors[i]);
-		printf("{ \"pos\" : %d, \"val\" : %d }", i, distance);
-		if (i != SENSOR_COUNT - 1) printf(", ");
+		printf("[%d,%d]\n", i, distance);
 	}
-	printf("] }\n");
 }
 
 int main(void) {
